@@ -16,17 +16,7 @@ name = "osrscache"
 path = "src/lib.rs"
 
 [dependencies]
-crc = "2.1"
-nom = "7.0"
-whirlpool = { version = "0.10", optional = true }
-num-bigint = { version = "0.4", optional = true }
-serde = { version = "1.0", features = ["derive"], optional = true }
-thiserror = "1.0.30"
-rune-fs = "0.1"
-
-[dev-dependencies]
-sha1 = "0.6"
-rune-fs = "0.1"
+rs-cache = "0.8"
 
 [package.metadata.docs.rs]
 all-features = true
