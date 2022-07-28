@@ -4,7 +4,32 @@ use std::{collections::HashMap, io::BufReader};
 pub use rscache;
 use rscache::definition::osrs::Definition;
 use rscache::extension::ReadExt;
-use rscache::impl_osrs_loader;
+use rscache::Cache;
+
+macro_rules! impl_osrs_loader {
+    ($ldr:ident, $def:ty, index_id: $idx_id:expr $(, archive_id: $arc_id:expr)?) => {
+        impl $ldr {
+            #[allow(unreachable_code)]
+            pub fn new(cache: &Cache) -> crate::Result<Self> {
+                $(
+                    let map = <$def>::fetch_from_archive(cache, $idx_id, $arc_id)?;
+
+                    return Ok(Self(map));
+                )?
+
+                let map = <$def>::fetch_from_index(cache, $idx_id)?;
+
+                Ok(Self(map))
+            }
+
+            pub fn load(&self, id: u16) -> Option<&$def> {
+                self.0.get(&id)
+            }
+        }
+
+        impl_iter_for_loader!($ldr, u16, $def);
+    };
+}
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, Eq, PartialEq, Debug, Default)]

@@ -17,6 +17,7 @@ path = "src/lib.rs"
 
 [dependencies]
 rs-cache = "0.8"
+thiserror = "1"
 
 [package.metadata.docs.rs]
 all-features = true
